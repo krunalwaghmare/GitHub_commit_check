@@ -13,7 +13,7 @@ jobs:
  
     steps:
       - uses: actions/checkout@v2
-      # this is the new step using the ms-teams-notification action
+      # this is the new step using the ms-teams-notification actio
       - name: Notify dedicated teams channel
         uses: jdcargile/ms-teams-notification@v1.3
         with:
