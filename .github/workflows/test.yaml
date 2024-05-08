@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # This step will run regardless of the outcome of the previous steps
+      # This step will run regardless of the outcome of the previous 
       - name: Notify dedicated teams channel on failure
         if: failure()
         uses: jdcargile/ms-teams-notification@v1.3
