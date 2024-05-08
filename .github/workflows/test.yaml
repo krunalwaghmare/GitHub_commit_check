@@ -6,19 +6,32 @@ on:
   pull_request:
     branches:
       - "main"
- 
+
 jobs:
   build:
     runs-on: ubuntu-latest
- 
+
     steps:
       - uses: actions/checkout@v2
-      # this is the new step using the ms-teams-notification actio
-      - name: Notify dedicated teams channel
+
+      # This step will run regardless of the outcome of the previous steps
+      - name: Notify dedicated teams channel on failure
+        if: failure()
         uses: jdcargile/ms-teams-notification@v1.3
         with:
-          #github-token: ${{ github.token }} 
+          github-token: ${{ github.token }} 
           ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          notification-summary: latest commit into the NXTGEN repository (V3)
-          notification-color: 17a2b8
+          notification-summary: Pipeline has failed
+          notification-color: ff0000 # Red color for failure
+          timezone: America/Denver
+
+      # This step will run only if the previous steps succeed
+      - name: Notify dedicated teams channel on success
+        if: always() # Ensures this step runs even if the previous steps fail
+        uses: jdcargile/ms-teams-notification@v1.3
+        with:
+          github-token: ${{ github.token }} 
+          ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          notification-summary: Pipeline has succeeded
+          notification-color: 17a2b8 # Blue color for success
           timezone: America/Denver
